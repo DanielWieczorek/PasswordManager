@@ -8,7 +8,7 @@
 #define	DWIINT_H
 #include "dwilib.h"
 
-uint32_t getRandomUint32(void);
+uint32_t getRandomUint32(void); 
 
 #endif	/* DWIINT_H */
 
