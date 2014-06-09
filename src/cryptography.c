@@ -3,7 +3,9 @@
 char* encryptionAlgorithmMap[] = {"Twofish"};
 char* hashAlgorithmMap[] = {"SHA256", "SHA512"};
 char initVector[16] = {"0x34"};
+enum CipherDirection {ENCRYPT, DECRYPT};
 
+char* executeCryptoFunction(const char* inputText, size_t inputTextLength, const char* key, const enum EncryptionAlgorithm algorithm, const enum CipherDirection );
 gcry_cipher_hd_t initCipherDescriptor(const enum EncryptionAlgorithm algorithm, const char* key);
 void initCryptographyModule(void);
 
@@ -30,30 +32,13 @@ gcry_cipher_hd_t initCipherDescriptor(const enum EncryptionAlgorithm algorithm, 
 }
 
 char* encryptString(const char* plainText, size_t plainTextLength, const char* key, const enum EncryptionAlgorithm algorithm) {
-    char* result = NULL;
-    if (key && plainText) {
-        result = calloc(plainTextLength, sizeof (char));
-        gcry_cipher_hd_t hd = initCipherDescriptor(algorithm, key);
-        if (hd) {
-            gcry_cipher_encrypt(hd, result, plainTextLength, plainText, plainTextLength);
-            gcry_cipher_close(hd);
-        }
-    }
-    return result;
+    return executeCryptoFunction(plainText,plainTextLength,key,algorithm, ENCRYPT);
 }
 
 char* decryptString(const char* cipherText, size_t cipherTextLength, const char* key, const enum EncryptionAlgorithm algorithm) {
-    char* result = NULL;
-    if (key && cipherText) {
-        result = calloc(cipherTextLength, sizeof (char));
-        gcry_cipher_hd_t hd = initCipherDescriptor(algorithm, key);
-        if (hd) {
-            gcry_cipher_decrypt(hd, result, cipherTextLength, cipherText, cipherTextLength);
-            gcry_cipher_close(hd);
-        }
-    }
-    return result;
+   return executeCryptoFunction(cipherText,cipherTextLength,key,algorithm, DECRYPT);
 }
+
 
 char* hashString(const char* text, const enum HashAlgorithm algorithm){
     int algorithmID = gcry_md_map_name(hashAlgorithmMap[algorithm]);
@@ -62,6 +47,22 @@ char* hashString(const char* text, const enum HashAlgorithm algorithm){
     gcry_md_hash_buffer(algorithmID,buffer,text, getStringLength(text));
     return buffer;
     
+}
+
+char* executeCryptoFunction(const char* inputText, size_t inputTextLength, const char* key, const enum EncryptionAlgorithm algorithm, const enum CipherDirection direction){
+    char* result = NULL;
+    if (key && inputText) {
+        result = calloc(inputTextLength, sizeof (char));
+        gcry_cipher_hd_t hd = initCipherDescriptor(algorithm, key);
+        if (hd) {
+            if(direction == ENCRYPT)
+                gcry_cipher_encrypt(hd, result, inputTextLength, inputText, inputTextLength);
+            else if(direction == DECRYPT)
+                gcry_cipher_decrypt(hd, result, inputTextLength, inputText, inputTextLength);
+            gcry_cipher_close(hd);
+        }
+    }
+    return result;
 }
 
 
