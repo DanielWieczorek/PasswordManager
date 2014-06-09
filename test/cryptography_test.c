@@ -36,6 +36,18 @@ void test_twofish_decrypt_encrypt() {
     free(plainText2);
 }
 
+void test_twofish_decrypt_encrypt_wrong_size() {
+    char *key = "ldlelslelslelslslflellalelslssl";
+    char *plainText = "ldlelslelslelslslflelslalelslsslldlelslelslelslslflelslallslssl";
+    enum EncryptionAlgorithm algorithm = TWOFISH;
+    initCryptographyModule();
+    int plainTextSize = getStringLength(plainText);
+    char *cipherText = encryptString(plainText,plainTextSize, key, algorithm);
+    CU_ASSERT_EQUAL(cipherText, NULL);
+    freeCryptographyModuleMemory();
+}
+
+
 
 void test_twofish_decrypt_encrypt_null() {
     char *key = NULL;
@@ -99,6 +111,7 @@ int main() {
     /* Add the tests to the suite */
     if ((NULL == CU_add_test(pSuite, "test_twofish_decrypt_encrypt", test_twofish_decrypt_encrypt)) ||
             (NULL == CU_add_test(pSuite, "test_twofish_decrypt_encrypt_null", test_twofish_decrypt_encrypt_null))||
+            (NULL == CU_add_test(pSuite, "test_twofish_decrypt_encrypt_wrong_size", test_twofish_decrypt_encrypt_wrong_size))||
             (NULL == CU_add_test(pSuite, "test_sha256_normal", test_sha256_normal))||
             (NULL == CU_add_test(pSuite, "test_sha512_normal", test_sha512_normal))||
             (NULL == CU_add_test(pSuite, "test_sha512_null", test_sha512_null))) {

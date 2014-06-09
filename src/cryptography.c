@@ -6,7 +6,7 @@ char initVector[16] = {"0x34"};
 enum CipherDirection {ENCRYPT, DECRYPT};
 
 char* executeCryptoFunction(const char* inputText, size_t inputTextLength, const char* key, const enum EncryptionAlgorithm algorithm, const enum CipherDirection);
-gcry_cipher_hd_t initCipherDescriptor(const enum EncryptionAlgorithm algorithm, const char* key);
+gcry_cipher_hd_t initCipherDescriptor(const enum EncryptionAlgorithm algorithm, const char* key, size_t inputTextLength) ;
 void initCryptographyModule(void);
 
 void initCryptographyModule(void) {
@@ -17,16 +17,17 @@ void initCryptographyModule(void) {
 
 }
 
-gcry_cipher_hd_t initCipherDescriptor(const enum EncryptionAlgorithm algorithm, const char* key) {
-    gcry_cipher_hd_t hd;
+gcry_cipher_hd_t initCipherDescriptor(const enum EncryptionAlgorithm algorithm, const char* key, size_t inputTextLength) {
+    gcry_cipher_hd_t hd = NULL;
     if (key) {
         int algorithmID = gcry_cipher_map_name(encryptionAlgorithmMap[algorithm]);
-
         size_t blkLength = gcry_cipher_get_algo_blklen(algorithmID);
         size_t keyLength = gcry_cipher_get_algo_keylen(algorithmID);
-        gcry_cipher_open(&hd, algorithmID, GCRY_CIPHER_MODE_CBC, GCRY_MD_FLAG_SECURE);
-        gcry_cipher_setkey(hd, key, keyLength);
-        gcry_cipher_setiv(hd, initVector, blkLength);
+        if(keyLength == getStringLength(key) && inputTextLength%blkLength == 0){
+            gcry_cipher_open(&hd, algorithmID, GCRY_CIPHER_MODE_CBC, GCRY_MD_FLAG_SECURE);
+            gcry_cipher_setkey(hd, key, keyLength);
+            gcry_cipher_setiv(hd, initVector, blkLength);
+        }
     }
     return hd;
 }
@@ -54,9 +55,9 @@ char* hashString(const char* text, const enum HashAlgorithm algorithm) {
 char* executeCryptoFunction(const char* inputText, size_t inputTextLength, const char* key, const enum EncryptionAlgorithm algorithm, const enum CipherDirection direction) {
     char* result = NULL;
     if (key && inputText) {
-        result = calloc(inputTextLength+1, sizeof (char));
-        gcry_cipher_hd_t hd = initCipherDescriptor(algorithm, key);
+        gcry_cipher_hd_t hd = initCipherDescriptor(algorithm, key, inputTextLength);
         if (hd) {
+            result = calloc(inputTextLength+1, sizeof (char));
             if (direction == ENCRYPT)
                 gcry_cipher_encrypt(hd, result, inputTextLength, inputText, inputTextLength);
             else if (direction == DECRYPT)
