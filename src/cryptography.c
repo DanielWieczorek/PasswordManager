@@ -54,7 +54,7 @@ char* hashString(const char* text, const enum HashAlgorithm algorithm) {
 char* executeCryptoFunction(const char* inputText, size_t inputTextLength, const char* key, const enum EncryptionAlgorithm algorithm, const enum CipherDirection direction) {
     char* result = NULL;
     if (key && inputText) {
-        result = calloc(inputTextLength, sizeof (char));
+        result = calloc(inputTextLength+1, sizeof (char));
         gcry_cipher_hd_t hd = initCipherDescriptor(algorithm, key);
         if (hd) {
             if (direction == ENCRYPT)
