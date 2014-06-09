@@ -32,6 +32,8 @@ void test_twofish_decrypt_encrypt() {
     char *plainText2 = decryptString(cipherText,plainTextSize, key, algorithm);
     CU_ASSERT_STRING_EQUAL(plainText, plainText2);
     freeCryptographyModuleMemory();
+    free(cipherText);
+    free(plainText2);
 }
 
 
@@ -46,6 +48,26 @@ void test_twofish_decrypt_encrypt_null() {
     CU_ASSERT_EQUAL(plainText, NULL);
     CU_ASSERT_EQUAL(plainText2, NULL);
     freeCryptographyModuleMemory();
+}
+
+void test_sha256_normal() {
+    char *text = "ldlelslelslelslslflelslalelslsslldlelslelslelslslflelslalelslssl";
+    enum HashAlgorithm algorithm = SHA256;
+    initCryptographyModule();
+    char *hash = hashString(text, algorithm);
+    CU_ASSERT_STRING_NOT_EQUAL(text, hash);
+    freeCryptographyModuleMemory();
+    free(hash);
+}
+
+void test_sha512_normal() {
+    char *text = "ldlelslelslelslslflelslalelslsslldlelslelslelslslflelslalelslssl";
+    enum HashAlgorithm algorithm = SHA512;
+    initCryptographyModule();
+    char *hash = hashString(text, algorithm);
+    CU_ASSERT_STRING_NOT_EQUAL(text, hash);
+    freeCryptographyModuleMemory();
+    free(hash);
 }
 
 
@@ -66,7 +88,9 @@ int main() {
 
     /* Add the tests to the suite */
     if ((NULL == CU_add_test(pSuite, "test_twofish_decrypt_encrypt", test_twofish_decrypt_encrypt)) ||
-            (NULL == CU_add_test(pSuite, "test_twofish_decrypt_encrypt_null", test_twofish_decrypt_encrypt_null))) {
+            (NULL == CU_add_test(pSuite, "test_twofish_decrypt_encrypt_null", test_twofish_decrypt_encrypt_null))||
+            (NULL == CU_add_test(pSuite, "test_sha256_normal", test_sha256_normal))||
+            (NULL == CU_add_test(pSuite, "test_sha512_normal", test_sha512_normal))) {
         CU_cleanup_registry();
         return CU_get_error();
     }
