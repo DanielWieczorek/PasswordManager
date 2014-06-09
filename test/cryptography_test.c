@@ -70,6 +70,16 @@ void test_sha512_normal() {
     free(hash);
 }
 
+void test_sha512_null() {
+    char *text = NULL;
+    enum HashAlgorithm algorithm = SHA512;
+    initCryptographyModule();
+    char *hash = hashString(text, algorithm);
+    CU_ASSERT_EQUAL(hash, NULL);
+    freeCryptographyModuleMemory();
+}
+
+
 
 
 int main() {
@@ -90,7 +100,8 @@ int main() {
     if ((NULL == CU_add_test(pSuite, "test_twofish_decrypt_encrypt", test_twofish_decrypt_encrypt)) ||
             (NULL == CU_add_test(pSuite, "test_twofish_decrypt_encrypt_null", test_twofish_decrypt_encrypt_null))||
             (NULL == CU_add_test(pSuite, "test_sha256_normal", test_sha256_normal))||
-            (NULL == CU_add_test(pSuite, "test_sha512_normal", test_sha512_normal))) {
+            (NULL == CU_add_test(pSuite, "test_sha512_normal", test_sha512_normal))||
+            (NULL == CU_add_test(pSuite, "test_sha512_null", test_sha512_null))) {
         CU_cleanup_registry();
         return CU_get_error();
     }
