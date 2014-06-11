@@ -4,6 +4,7 @@ char* encryptionAlgorithmMap[] = {"Twofish"};
 char* hashAlgorithmMap[] = {"SHA256", "SHA512"};
 char initVector[16] = {"0x34"};
 enum CipherDirection {ENCRYPT, DECRYPT};
+gcry_error_t (*cipherDirections[2])()={gcry_cipher_encrypt,gcry_cipher_decrypt};
 
 char* executeCryptoFunction(const char* inputText, size_t inputTextLength, const char* key, const enum EncryptionAlgorithm algorithm, const enum CipherDirection);
 gcry_cipher_hd_t initCipherDescriptor(const enum EncryptionAlgorithm algorithm, const char* key, size_t inputTextLength) ;
@@ -58,10 +59,7 @@ char* executeCryptoFunction(const char* inputText, size_t inputTextLength, const
         gcry_cipher_hd_t hd = initCipherDescriptor(algorithm, key, inputTextLength);
         if (hd) {
             result = calloc(inputTextLength+1, sizeof (char));
-            if (direction == ENCRYPT)
-                gcry_cipher_encrypt(hd, result, inputTextLength, inputText, inputTextLength);
-            else if (direction == DECRYPT)
-                gcry_cipher_decrypt(hd, result, inputTextLength, inputText, inputTextLength);
+            (*cipherDirections[direction])(hd, result, inputTextLength, inputText, inputTextLength);
             gcry_cipher_close(hd);
         }
     }
