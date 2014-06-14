@@ -4,12 +4,14 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>src/core.h</itemPath>
       <itemPath>src/cryptography.h</itemPath>
       <itemPath>src/dwiint.h</itemPath>
       <itemPath>src/dwiio.h</itemPath>
       <itemPath>src/dwilib.h</itemPath>
       <itemPath>src/dwistring.h</itemPath>
       <itemPath>src/passwordgenerator.h</itemPath>
+      <itemPath>src/persistence.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -21,6 +23,7 @@
       <itemPath>src/cryptography.c</itemPath>
       <itemPath>main.c</itemPath>
       <itemPath>../passwordmanager/src/passwordgenerator.c</itemPath>
+      <itemPath>src/persistence.c</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -37,6 +40,12 @@
                      projectFiles="true"
                      kind="TEST">
         <itemPath>../passwordmanager/test/passwordgenerator_test.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f3"
+                     displayName="Tests for the Persistence Module"
+                     projectFiles="true"
+                     kind="TEST">
+        <itemPath>test/persistence_test.c</itemPath>
       </logicalFolder>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
@@ -118,7 +127,17 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f3">
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f3</output>
+          <linkerLibItems>
+            <linkerOptionItem>-lcunit</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
       <item path="main.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/core.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/cryptography.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -134,7 +153,13 @@
       </item>
       <item path="src/passwordgenerator.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/persistence.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/persistence.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="test/cryptography_test.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="test/persistence_test.c" ex="false" tool="0" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -183,7 +208,17 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f3">
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f3</output>
+          <linkerLibItems>
+            <linkerOptionItem>-lcunit</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
       <item path="main.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/core.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/cryptography.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -199,7 +234,13 @@
       </item>
       <item path="src/passwordgenerator.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/persistence.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/persistence.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="test/cryptography_test.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="test/persistence_test.c" ex="false" tool="0" flavor2="0">
       </item>
     </conf>
   </confs>

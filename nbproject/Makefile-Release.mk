@@ -37,7 +37,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/_ext/351423432/passwordgenerator.o \
 	${OBJECTDIR}/main.o \
-	${OBJECTDIR}/src/cryptography.o
+	${OBJECTDIR}/src/cryptography.o \
+	${OBJECTDIR}/src/persistence.o
 
 # Test Directory
 TESTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tests
@@ -45,7 +46,8 @@ TESTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tests
 # Test Files
 TESTFILES= \
 	${TESTDIR}/TestFiles/f2 \
-	${TESTDIR}/TestFiles/f1
+	${TESTDIR}/TestFiles/f1 \
+	${TESTDIR}/TestFiles/f3
 
 # C Compiler Flags
 CFLAGS=
@@ -86,6 +88,11 @@ ${OBJECTDIR}/src/cryptography.o: src/cryptography.c
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/cryptography.o src/cryptography.c
 
+${OBJECTDIR}/src/persistence.o: src/persistence.c 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/persistence.o src/persistence.c
+
 # Subprojects
 .build-subprojects:
 
@@ -99,6 +106,10 @@ ${TESTDIR}/TestFiles/f1: ${TESTDIR}/_ext/1990793406/passwordgenerator_test.o ${O
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.c}   -o ${TESTDIR}/TestFiles/f1 $^ ${LDLIBSOPTIONS} -lcunit 
 
+${TESTDIR}/TestFiles/f3: ${TESTDIR}/test/persistence_test.o ${OBJECTFILES:%.o=%_nomain.o}
+	${MKDIR} -p ${TESTDIR}/TestFiles
+	${LINK.c}   -o ${TESTDIR}/TestFiles/f3 $^ ${LDLIBSOPTIONS} -lcunit 
+
 
 ${TESTDIR}/test/cryptography_test.o: test/cryptography_test.c 
 	${MKDIR} -p ${TESTDIR}/test
@@ -110,6 +121,12 @@ ${TESTDIR}/_ext/1990793406/passwordgenerator_test.o: ../passwordmanager/test/pas
 	${MKDIR} -p ${TESTDIR}/_ext/1990793406
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${TESTDIR}/_ext/1990793406/passwordgenerator_test.o ../passwordmanager/test/passwordgenerator_test.c
+
+
+${TESTDIR}/test/persistence_test.o: test/persistence_test.c 
+	${MKDIR} -p ${TESTDIR}/test
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${TESTDIR}/test/persistence_test.o test/persistence_test.c
 
 
 ${OBJECTDIR}/_ext/351423432/passwordgenerator_nomain.o: ${OBJECTDIR}/_ext/351423432/passwordgenerator.o ../passwordmanager/src/passwordgenerator.c 
@@ -151,12 +168,26 @@ ${OBJECTDIR}/src/cryptography_nomain.o: ${OBJECTDIR}/src/cryptography.o src/cryp
 	    ${CP} ${OBJECTDIR}/src/cryptography.o ${OBJECTDIR}/src/cryptography_nomain.o;\
 	fi
 
+${OBJECTDIR}/src/persistence_nomain.o: ${OBJECTDIR}/src/persistence.o src/persistence.c 
+	${MKDIR} -p ${OBJECTDIR}/src
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/persistence.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.c) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/persistence_nomain.o src/persistence.c;\
+	else  \
+	    ${CP} ${OBJECTDIR}/src/persistence.o ${OBJECTDIR}/src/persistence_nomain.o;\
+	fi
+
 # Run Test Targets
 .test-conf:
 	@if [ "${TEST}" = "" ]; \
 	then  \
 	    ${TESTDIR}/TestFiles/f2 || true; \
 	    ${TESTDIR}/TestFiles/f1 || true; \
+	    ${TESTDIR}/TestFiles/f3 || true; \
 	else  \
 	    ./${TEST} || true; \
 	fi
