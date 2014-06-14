@@ -58,8 +58,9 @@ char* executeCryptoFunction(const char* inputText, size_t inputTextLength, const
     if (key && inputText) {
         gcry_cipher_hd_t hd = initCipherDescriptor(algorithm, key, inputTextLength);
         if (hd) {
+  
             result = calloc(inputTextLength+1, sizeof (char));
-            (*cipherDirections[direction])(hd, result, inputTextLength, inputText, inputTextLength);
+            (*cipherDirections[direction])(hd, result, inputTextLength,  inputText, inputTextLength);
             gcry_cipher_close(hd);
         }
     }

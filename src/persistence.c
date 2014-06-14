@@ -30,7 +30,7 @@ Record* getRecordBySite(const char* fileName, const char* siteName){
     
     while(ptr){
         temp = convertStringToRecord(ptr);
-        if(strcmp(temp->site, siteName)==0){
+        if(temp->site && strcmp(temp->site, siteName)==0){
             result = temp;
             break;
         }
