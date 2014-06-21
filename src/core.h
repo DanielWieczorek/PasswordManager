@@ -13,6 +13,8 @@
 void writeEncryptedRecord(char* username, char* site, char* password, char* key, char* fileName);
 Record* retrieveEncryptedRecord(char* site, char* fileName);
 
+Record* decryptRecord(Record* record, char* key);
+
 
 
 #endif	/* CORE_H */

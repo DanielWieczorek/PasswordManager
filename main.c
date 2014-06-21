@@ -33,6 +33,7 @@ int main(int argc, char** argv) {
 
     Record* encrypted = retrieveEncryptedRecord(site,fileName);
     if (encrypted) {
+        encrypted = decryptRecord(encrypted, hashedKey);
         printf("encrypted username: %s\n", encrypted->username);
         printf("encrypted site: %s\n", encrypted->site);
         printf("encrypted password: %s\n", encrypted->password);
