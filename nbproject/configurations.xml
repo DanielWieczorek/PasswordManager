@@ -4,6 +4,7 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>src/base64.h</itemPath>
       <itemPath>src/core.h</itemPath>
       <itemPath>src/cryptography.h</itemPath>
       <itemPath>src/dwiint.h</itemPath>
@@ -20,6 +21,7 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>src/base64.c</itemPath>
       <itemPath>src/core.c</itemPath>
       <itemPath>src/cryptography.c</itemPath>
       <itemPath>main.c</itemPath>
@@ -138,6 +140,10 @@
       </folder>
       <item path="main.c" ex="false" tool="0" flavor2="0">
       </item>
+      <item path="src/base64.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/base64.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/core.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/core.h" ex="false" tool="3" flavor2="0">
@@ -220,6 +226,10 @@
         </linkerTool>
       </folder>
       <item path="main.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/base64.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/base64.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/core.c" ex="false" tool="0" flavor2="0">
       </item>

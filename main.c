@@ -31,7 +31,7 @@ int main(int argc, char** argv) {
     writeEncryptedRecord(username, site, password, hashedKey, fileName);
 
 
-    Record* encrypted = getRecordBySite(fileName, hashString(site, SHA512));
+    Record* encrypted = retrieveEncryptedRecord(site,fileName);
     if (encrypted) {
         printf("encrypted username: %s\n", encrypted->username);
         printf("encrypted site: %s\n", encrypted->site);

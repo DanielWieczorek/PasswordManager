@@ -9,7 +9,10 @@
 #define	CORE_H
 #include "cryptography.h"
 #include "persistence.h"
+#include "base64.h"
 void writeEncryptedRecord(char* username, char* site, char* password, char* key, char* fileName);
+Record* retrieveEncryptedRecord(char* site, char* fileName);
+
 
 
 #endif	/* CORE_H */

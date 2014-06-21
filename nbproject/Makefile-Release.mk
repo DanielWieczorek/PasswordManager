@@ -37,6 +37,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/_ext/351423432/passwordgenerator.o \
 	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/src/base64.o \
 	${OBJECTDIR}/src/core.o \
 	${OBJECTDIR}/src/cryptography.o \
 	${OBJECTDIR}/src/persistence.o
@@ -83,6 +84,11 @@ ${OBJECTDIR}/main.o: main.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.c
+
+${OBJECTDIR}/src/base64.o: src/base64.c 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/base64.o src/base64.c
 
 ${OBJECTDIR}/src/core.o: src/core.c 
 	${MKDIR} -p ${OBJECTDIR}/src
@@ -159,6 +165,19 @@ ${OBJECTDIR}/main_nomain.o: ${OBJECTDIR}/main.o main.c
 	    $(COMPILE.c) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main_nomain.o main.c;\
 	else  \
 	    ${CP} ${OBJECTDIR}/main.o ${OBJECTDIR}/main_nomain.o;\
+	fi
+
+${OBJECTDIR}/src/base64_nomain.o: ${OBJECTDIR}/src/base64.o src/base64.c 
+	${MKDIR} -p ${OBJECTDIR}/src
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/base64.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.c) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/base64_nomain.o src/base64.c;\
+	else  \
+	    ${CP} ${OBJECTDIR}/src/base64.o ${OBJECTDIR}/src/base64_nomain.o;\
 	fi
 
 ${OBJECTDIR}/src/core_nomain.o: ${OBJECTDIR}/src/core.o src/core.c 
