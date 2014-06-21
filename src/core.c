@@ -29,7 +29,7 @@ Record* retrieveEncryptedRecord(char* site, char* fileName){
     base64encode(hashString(site, SHA512),512, hashed_site,1024);
   
     Record* result = getRecordBySite(fileName, hashed_site);
-   
+    free(hashed_site);
     return result;
     
 }
@@ -56,6 +56,13 @@ Record* decryptRecord(Record* record, char* key){
     record->username = decryptString(decodedUsername, 512, key, TWOFISH);
     record->site = decodedSite;
     
+    free(decodedPassword);
+    free(decodedUsername);
+    free(decodedSite);
+    
+    free(passwordSize);
+    free(usernameSize);
+    free(siteSize);
     return record;
 
 }
