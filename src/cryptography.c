@@ -46,7 +46,7 @@ char* hashString(const char* text, const enum HashAlgorithm algorithm) {
     if (text) {
         int algorithmID = gcry_md_map_name(hashAlgorithmMap[algorithm]);
         size_t digestLength = gcry_md_get_algo_dlen(algorithmID);
-        buffer = calloc(digestLength + 1, sizeof (char));
+        buffer = calloc(sizeof (char),digestLength + 1);
         gcry_md_hash_buffer(algorithmID, buffer, text, getStringLength(text));
     }
     return buffer;
@@ -59,7 +59,7 @@ char* executeCryptoFunction(const char* inputText, size_t inputTextLength, const
         gcry_cipher_hd_t hd = initCipherDescriptor(algorithm, key, inputTextLength);
         if (hd) {
   
-            result = calloc(inputTextLength+1, sizeof (char));
+            result = calloc( sizeof (char),inputTextLength+1);
             (*cipherDirections[direction])(hd, result, inputTextLength,  inputText, inputTextLength);
             gcry_cipher_close(hd);
         }

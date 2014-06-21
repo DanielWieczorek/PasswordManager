@@ -12,4 +12,5 @@ off_t getFileSize(const char *filename);
 char* getAbsolutePath(const char* relativePath);
 char* readFileAsStringFully(const char *filename);
 char* readBytesFromFile(const char *filename, off_t bytes);
+void writeStringToFile(const char *filename, char* input);
 #endif /* DWIIO_H_ */

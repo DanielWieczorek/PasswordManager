@@ -1,11 +1,12 @@
 #include "persistence.h"
-#include "dwistring.h"
+#include "dwilib.h"
+
 const char* foo= "foobar";
 const size_t MAX_LINE_LENGTH = 1024;
 Record* convertStringToRecord(char* line);
 
 Record* createRecord( char* username,  char* site,  char* password){
-    Record* result = calloc(1,sizeof(Record));
+    Record* result = calloc(sizeof(Record),1);
     result->username = username;
     result->site = site;
     result->password = password;
@@ -34,8 +35,13 @@ Record* getRecordBySite(const char* fileName, const char* siteName){
             result = temp;
             break;
         }
+        free(ptr);
+        free(temp);
         ptr = strtok(NULL, "\n");
+        
+        
     }
+    
     
     
     return result;

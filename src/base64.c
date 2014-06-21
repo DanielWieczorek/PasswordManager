@@ -1,6 +1,6 @@
 #include <inttypes.h>
 #include <string.h>
- 
+#include "base64.h"
 int base64encode(const void* data_buf, size_t dataLength, char* result, size_t resultSize)
 {
    const char base64chars[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";

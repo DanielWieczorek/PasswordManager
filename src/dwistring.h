@@ -9,4 +9,5 @@
 char* concatAll(const uint32_t num, ...);
 char* concat(const char* first, const char* second);
 size_t getStringLength(const char* string);
+void nullString(char* string);
 #endif /* DWI_STRING_H_ */

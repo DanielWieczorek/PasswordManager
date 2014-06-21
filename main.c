@@ -39,6 +39,12 @@ int main(int argc, char** argv) {
         printf("encrypted password: %s\n", encrypted->password);
     } else
         printf("nothing found\n");
+    free(username);
+    free(site);
+    free(hashedKey);
+    free(encrypted);
+    free(password);
+    
 }
 
 static int getLine(char *prmpt, char *buff, size_t sz) {
