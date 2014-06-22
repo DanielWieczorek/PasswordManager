@@ -47,6 +47,7 @@ TESTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tests
 
 # Test Files
 TESTFILES= \
+	${TESTDIR}/TestFiles/f4 \
 	${TESTDIR}/TestFiles/f2 \
 	${TESTDIR}/TestFiles/f1 \
 	${TESTDIR}/TestFiles/f3
@@ -113,6 +114,10 @@ ${OBJECTDIR}/src/persistence.o: src/persistence.c
 
 # Build Test Targets
 .build-tests-conf: .build-conf ${TESTFILES}
+${TESTDIR}/TestFiles/f4: ${TESTDIR}/test/core_test.o ${OBJECTFILES:%.o=%_nomain.o}
+	${MKDIR} -p ${TESTDIR}/TestFiles
+	${LINK.c}   -o ${TESTDIR}/TestFiles/f4 $^ ${LDLIBSOPTIONS} -lcunit 
+
 ${TESTDIR}/TestFiles/f2: ${TESTDIR}/test/cryptography_test.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.c}   -o ${TESTDIR}/TestFiles/f2 $^ ${LDLIBSOPTIONS} -lcunit -lgcrypt 
@@ -124,6 +129,12 @@ ${TESTDIR}/TestFiles/f1: ${TESTDIR}/_ext/1990793406/passwordgenerator_test.o ${O
 ${TESTDIR}/TestFiles/f3: ${TESTDIR}/test/persistence_test.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.c}   -o ${TESTDIR}/TestFiles/f3 $^ ${LDLIBSOPTIONS} -lcunit 
+
+
+${TESTDIR}/test/core_test.o: test/core_test.c 
+	${MKDIR} -p ${TESTDIR}/test
+	${RM} "$@.d"
+	$(COMPILE.c) -g -std=c99 -MMD -MP -MF "$@.d" -o ${TESTDIR}/test/core_test.o test/core_test.c
 
 
 ${TESTDIR}/test/cryptography_test.o: test/cryptography_test.c 
@@ -226,6 +237,7 @@ ${OBJECTDIR}/src/persistence_nomain.o: ${OBJECTDIR}/src/persistence.o src/persis
 .test-conf:
 	@if [ "${TEST}" = "" ]; \
 	then  \
+	    ${TESTDIR}/TestFiles/f4 || true; \
 	    ${TESTDIR}/TestFiles/f2 || true; \
 	    ${TESTDIR}/TestFiles/f1 || true; \
 	    ${TESTDIR}/TestFiles/f3 || true; \

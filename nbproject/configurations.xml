@@ -32,6 +32,12 @@
                    displayName="Test Files"
                    projectFiles="false"
                    kind="TEST_LOGICAL_FOLDER">
+      <logicalFolder name="f4"
+                     displayName="Tests for Core module"
+                     projectFiles="true"
+                     kind="TEST">
+        <itemPath>test/core_test.c</itemPath>
+      </logicalFolder>
       <logicalFolder name="f2"
                      displayName="Tests for the Cryptography Module"
                      projectFiles="true"
@@ -138,6 +144,14 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f4">
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f4</output>
+          <linkerLibItems>
+            <linkerOptionItem>-lcunit</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
       <item path="main.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/base64.c" ex="false" tool="0" flavor2="0">
@@ -165,6 +179,8 @@
       <item path="src/persistence.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/persistence.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="test/core_test.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="test/cryptography_test.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -225,6 +241,14 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f4">
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f4</output>
+          <linkerLibItems>
+            <linkerOptionItem>-lcunit</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
       <item path="main.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/base64.c" ex="false" tool="0" flavor2="0">
@@ -252,6 +276,8 @@
       <item path="src/persistence.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/persistence.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="test/core_test.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="test/cryptography_test.c" ex="false" tool="0" flavor2="0">
       </item>

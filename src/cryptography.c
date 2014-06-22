@@ -46,7 +46,7 @@ char* hashString(const char* text, const enum HashAlgorithm algorithm) {
     if (text) {
         int algorithmID = gcry_md_map_name(hashAlgorithmMap[algorithm]);
         size_t digestLength = gcry_md_get_algo_dlen(algorithmID);
-        buffer = calloc(sizeof (char),digestLength + 1);
+        buffer = calloc(sizeof (char),digestLength+1);
         gcry_md_hash_buffer(algorithmID, buffer, text, getStringLength(text));
     }
     return buffer;

@@ -10,10 +10,10 @@
 #include "cryptography.h"
 #include "persistence.h"
 #include "base64.h"
-void writeEncryptedRecord(char* username, char* site, char* password, char* key, char* fileName);
-Record* retrieveEncryptedRecord(char* site, char* fileName);
+void writeEncryptedRecord(const char* username, const char* site, const char* password, const char* key, const char* fileName);
+Record* retrieveEncryptedRecord(const char* site, const char* fileName);
 
-Record* decryptRecord(Record* record, char* key);
+Record* decryptRecord(const Record* record, char* key);
 
 
 

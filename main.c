@@ -33,10 +33,12 @@ int main(int argc, char** argv) {
 
     Record* encrypted = retrieveEncryptedRecord(site,fileName);
     if (encrypted) {
-        encrypted = decryptRecord(encrypted, hashedKey);
-        printf("encrypted username: %s\n", encrypted->username);
-        printf("encrypted site: %s\n", encrypted->site);
-        printf("encrypted password: %s\n", encrypted->password);
+        Record *decrypted = decryptRecord(encrypted, hashedKey);
+        
+        printf("encrypted username: %s\n", decrypted->username);
+        printf("encrypted site: %s\n", decrypted->site);
+        printf("encrypted password: %s\n", decrypted->password);
+        free(decrypted);
     } else
         printf("nothing found\n");
     free(username);
@@ -44,7 +46,8 @@ int main(int argc, char** argv) {
     free(hashedKey);
     free(encrypted);
     free(password);
-    
+    freeCryptographyModuleMemory();
+    return 0;
 }
 
 static int getLine(char *prmpt, char *buff, size_t sz) {
