@@ -12,7 +12,7 @@ static int getLine(char *prmpt, char *buff, size_t sz);
 
 int main(int argc, char** argv) {
     initCryptographyModule();
-    char* fileName = "./foo";
+    char* fileName = "./pw";
     char* username = calloc(sizeof (char), 20);
     char* site = calloc(sizeof (char), 20);
     char* key = calloc(sizeof (char), 50);

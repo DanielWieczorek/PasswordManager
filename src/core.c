@@ -2,6 +2,9 @@
 #include "core.h"
 
 char* hashSite(const char *site);
+
+static const char* CREDENTIAL_SITE = "PasswordManagerSiteForCredentials";
+
 void writeEncryptedRecord(const char* username, const char* site, const char* password, const  char* key, const char* fileName){
     char* paddedusername = calloc(sizeof(char), 256);
     char* paddedpassword = calloc(sizeof(char), 256);
@@ -32,6 +35,31 @@ char* hashSite(const char *site){
     sprintf(hashed_site,"%s",hashString(site, SHA512));
     base64encode(hashed_site,512, hashed_site,1024);
     return hashed_site;
+}
+
+bool doesCredentialEntryExist(const char* fileName){
+    bool result = false;
+    Record *encryptedRecord = retrieveEncryptedRecord(CREDENTIAL_SITE,fileName);
+    if(encryptedRecord){
+        result = true;
+        free(encryptedRecord);
+    }
+    return result;
+}
+
+bool checkCredentials(const char* password, const char* fileName){
+    bool result = false;
+    Record *encryptedRecord = retrieveEncryptedRecord(CREDENTIAL_SITE,fileName);
+    
+    if(encryptedRecord){
+        Record *decryptedRecord = decryptRecord(encryptedRecord, password);
+        if(!strcmp(password, decryptedRecord->password))
+            result = true;
+        free(decryptedRecord);
+    }
+    
+    free(encryptedRecord);
+    return result;
 }
 
 
