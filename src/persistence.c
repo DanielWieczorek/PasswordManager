@@ -42,8 +42,6 @@ Record* getRecordBySite(const char* fileName, const char* siteName){
         
     }
     
-    
-    
     return result;
 }
 

@@ -11,9 +11,9 @@
 
 typedef struct 
 {
-    char* username;
-    char* site;
-    char* password;
+    unsigned char* username;
+    unsigned char* site;
+    unsigned char* password;
     
 }Record;
 

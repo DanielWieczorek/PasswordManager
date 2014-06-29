@@ -1,6 +1,7 @@
 
 #include "core.h"
 
+char* hashSite(const char *site);
 void writeEncryptedRecord(const char* username, const char* site, const char* password, const  char* key, const char* fileName){
     char* paddedusername = calloc(sizeof(char), 256);
     char* paddedpassword = calloc(sizeof(char), 256);
@@ -10,9 +11,7 @@ void writeEncryptedRecord(const char* username, const char* site, const char* pa
     
     char * encrypted_username =  calloc(sizeof(char), 512);
     base64encode(encryptString(paddedusername, 256, key, TWOFISH),256,encrypted_username, 512);
-    char * hashed_site = calloc(sizeof(char), 1024);
-    sprintf(hashed_site,"%s",hashString(site, SHA512));
-    base64encode(hashed_site,512, hashed_site,1024);
+    char * hashed_site = hashSite(site);
     char * encrypted_password = calloc(sizeof(char), 512);
     base64encode(encryptString(paddedpassword, 256, key, TWOFISH),256,encrypted_password, 512);
     
@@ -28,10 +27,16 @@ void writeEncryptedRecord(const char* username, const char* site, const char* pa
    
 }
 
+char* hashSite(const char *site){
+    char * hashed_site = calloc(sizeof(char), 1024);
+    sprintf(hashed_site,"%s",hashString(site, SHA512));
+    base64encode(hashed_site,512, hashed_site,1024);
+    return hashed_site;
+}
+
 
 Record* retrieveEncryptedRecord(const char* site, const char* fileName){
-    char * hashed_site = calloc(sizeof(char), 1024);
-    base64encode(hashString(site, SHA512),512, hashed_site,1024);
+   char * hashed_site = hashSite(site);
   
     Record* result = getRecordBySite(fileName, hashed_site);
     free(hashed_site);
