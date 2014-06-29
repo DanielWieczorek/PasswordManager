@@ -18,34 +18,44 @@ int main(int argc, char** argv) {
     char* key = calloc(sizeof (char), 50);
     getLine("please enter your username:\n", username, 20);
     getLine("please enter the site name:\n", site, 20);
-    getLine("please enter the key name:\n", key, 50);
+    getLine("please enter the key:\n", key, 50);
     char* hashedKey = hashString(key, SHA256);
-    
-    
-    printf("the hashed key is: %s\n", hashedKey);
-    
-    free(key);
-    char* password = generatePassword(12, BASE85);
-    printf("the generated password is: %s\n", password);
 
-    writeEncryptedRecord(username, site, password, hashedKey, fileName);
+    if (!doesCredentialEntryExist(fileName)){
+        printf("there are no credentials set. Credentials with the key entered are created");
+        writeEncryptedRecord("foo", CREDENTIAL_SITE, key, hashedKey, fileName);
+    }
+    if (checkCredentials(hashedKey, fileName)) {
 
 
-    Record* encrypted = retrieveEncryptedRecord(site,fileName);
-    if (encrypted) {
-        Record *decrypted = decryptRecord(encrypted, hashedKey);
-        
-        printf("encrypted username: %s\n", decrypted->username);
-        printf("encrypted site: %s\n", decrypted->site);
-        printf("encrypted password: %s\n", decrypted->password);
-        free(decrypted);
+
+        printf("the hashed key is: %s\n", hashedKey);
+
+        free(key);
+        char* password = generatePassword(12, BASE85);
+        printf("the generated password is: %s\n", password);
+
+        writeEncryptedRecord(username, site, password, hashedKey, fileName);
+
+
+        Record* encrypted = retrieveEncryptedRecord(site, fileName);
+        if (encrypted) {
+            Record *decrypted = decryptRecord(encrypted, hashedKey);
+
+            printf("encrypted username: %s\n", decrypted->username);
+            printf("encrypted site: %s\n", decrypted->site);
+            printf("encrypted password: %s\n", decrypted->password);
+            free(decrypted);
+        } else
+            printf("nothing found\n");
+    free(encrypted);
+    free(password);
     } else
-        printf("nothing found\n");
+        printf("the credentials are wrong. sorry!");
     free(username);
     free(site);
     free(hashedKey);
-    free(encrypted);
-    free(password);
+
     freeCryptographyModuleMemory();
     return 0;
 }

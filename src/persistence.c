@@ -14,7 +14,7 @@ Record* createRecord( char* username,  char* site,  char* password){
 }
 
 char* buildOutputString(const Record* input){
-    return concatAll(5,input->username,":",input->site,":",input->password);
+    return concatAll(6,input->username,":",input->site,":",input->password,"\n");
 }
 
 void saveRecord(const char* fileName, const Record* input){
@@ -27,7 +27,8 @@ Record* getRecordBySite(const char* fileName, const char* siteName){
     Record* temp = NULL;
     char* completeFile = readFileAsStringFully(fileName);
     char* ptr;
-    ptr = strtok(completeFile, "\n");
+    char *end_str;
+    ptr = strtok_r(completeFile, "\n",&end_str);
     
     while(ptr){
         temp = convertStringToRecord(ptr);
@@ -35,9 +36,9 @@ Record* getRecordBySite(const char* fileName, const char* siteName){
             result = temp;
             break;
         }
-        free(ptr);
+        
+        ptr = strtok_r(NULL, "\n",&end_str);
         free(temp);
-        ptr = strtok(NULL, "\n");
         
         
     }

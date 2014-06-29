@@ -3,7 +3,6 @@
 
 char* hashSite(const char *site);
 
-static const char* CREDENTIAL_SITE = "PasswordManagerSiteForCredentials";
 
 void writeEncryptedRecord(const char* username, const char* site, const char* password, const  char* key, const char* fileName){
     char* paddedusername = calloc(sizeof(char), 256);
@@ -53,7 +52,7 @@ bool checkCredentials(const char* password, const char* fileName){
     
     if(encryptedRecord){
         Record *decryptedRecord = decryptRecord(encryptedRecord, password);
-        if(!strcmp(password, decryptedRecord->password))
+        if(!strcmp(password, hashString(decryptedRecord->password, SHA256)))
             result = true;
         free(decryptedRecord);
     }
