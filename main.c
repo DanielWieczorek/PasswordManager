@@ -12,16 +12,16 @@ static int getLine(char *prmpt, char *buff, size_t sz);
 void insertEntry();
 void retrieveEntry();
 
-char *keys[2]={"i","r"};
-void (*function[2])()={insertEntry,retrieveEntry};
+char *keys[2] = {"i", "r"};
+void (*function[2])() = {insertEntry, retrieveEntry};
 
 int main(int argc, char** argv) {
-    char *line = calloc(sizeof(char),20);
-    while(strcmp(line,"exit")){
-        getLine("What would you like to do?",line, 20);
-        int i=0, foundIndex=0;
-        for(i=0; i<sizeof(keys);i++)
-            if(!strcmp(line,keys[i])){
+    char *line = calloc(sizeof (char), 20);
+    while (strcmp(line, "exit")) {
+        getLine("What would you like to do?", line, 20);
+        int i = 0, foundIndex = 0;
+        for (i = 0; i<sizeof (keys); i++)
+            if (!strcmp(line, keys[i])) {
                 foundIndex = i;
                 break;
             }
@@ -30,7 +30,7 @@ int main(int argc, char** argv) {
     return 0;
 }
 
-void retrieveEntry(){
+void retrieveEntry() {
     initCryptographyModule();
     char* fileName = "./pw";
     char* site = calloc(sizeof (char), 20);
@@ -46,13 +46,16 @@ void retrieveEntry(){
     if (checkCredentials(hashedKey, fileName)) {
         printf("the hashed key is: %s\n", hashedKey);
         free(key);
-        Record* encrypted = retrieveEncryptedRecord(site, fileName);
+        Record** encrypted = retrieveAllEncryptedRecords(site, fileName);
         if (encrypted) {
-            Record *decrypted = decryptRecord(encrypted, hashedKey);
-            printf("encrypted username: %s\n", decrypted->username);
-            printf("encrypted site: %s\n", decrypted->site);
-            printf("encrypted password: %s\n", decrypted->password);
-            free(decrypted);
+            int i = 0;
+            for (i = 0; encrypted[i] != NULL; i++) {
+                Record *decrypted = decryptRecord(encrypted[i], hashedKey);
+                printf("encrypted username: %s\n", decrypted->username);
+                printf("encrypted site: %s\n", decrypted->site);
+                printf("encrypted password: %s\n", decrypted->password);
+                free(decrypted);
+            }
         } else
             printf("nothing found\n");
         free(encrypted);
@@ -63,8 +66,7 @@ void retrieveEntry(){
     freeCryptographyModuleMemory();
 }
 
-
-void insertEntry(){
+void insertEntry() {
     initCryptographyModule();
     char* fileName = "./pw";
     char* username = calloc(sizeof (char), 20);

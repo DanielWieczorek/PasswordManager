@@ -22,7 +22,7 @@ Record* createRecord( char* username,  char* site,  char* password);
 void saveRecord(const char* fileName, const Record* input);
 
 Record* getRecordBySite(const char* fileName, const char* siteName);
-
+Record** getAllRecordsBySite(const char* fileName, const char* siteName);
 void deleteRecord(Record* input);
 
 #endif	/* PERSISTENCE_H */

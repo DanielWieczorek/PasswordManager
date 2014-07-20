@@ -71,6 +71,15 @@ Record* retrieveEncryptedRecord(const char* site, const char* fileName){
     
 }
 
+Record** retrieveAllEncryptedRecords(const char* site, const char* fileName){
+   char * hashed_site = hashSite(site);
+  
+    Record** result = getAllRecordsBySite(fileName, hashed_site);
+    free(hashed_site);
+    return result;
+    
+}
+
 Record* decryptRecord(const Record* record, char* key){
     Record *result = calloc(sizeof(Record),1);
     unsigned char* decodedPassword = calloc(sizeof(unsigned char),256*2);

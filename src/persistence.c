@@ -38,13 +38,37 @@ Record* getRecordBySite(const char* fileName, const char* siteName){
         }
         
         ptr = strtok_r(NULL, "\n",&end_str);
-        free(temp);
-        
-        
+        free(temp);   
     }
-    
     return result;
 }
+
+Record** getAllRecordsBySite(const char* fileName, const char* siteName){
+    Record** result = calloc(sizeof(Record*), 100);
+    Record* temp = NULL;
+    char* completeFile = readFileAsStringFully(fileName);
+    char* ptr;
+    char *end_str;
+    ptr = strtok_r(completeFile, "\n",&end_str);
+    int currentIndex = 0;
+    
+    while(ptr){
+        temp = convertStringToRecord(ptr);
+        if(temp->site && strcmp(temp->site, siteName)==0){
+            result[currentIndex++] = temp;
+        }
+        
+        ptr = strtok_r(NULL, "\n",&end_str);
+        free(temp);   
+    }
+    if(!result[0]){
+        free(result);
+        result = NULL;
+    }
+        
+    return result;
+}
+
 
 Record* convertStringToRecord(char* line){
     char* username = strtok(line, ":");
