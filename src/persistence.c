@@ -59,7 +59,7 @@ Record** getAllRecordsBySite(const char* fileName, const char* siteName){
         }
         
         ptr = strtok_r(NULL, "\n",&end_str);
-        free(temp);   
+        //free(temp);   
     }
     if(!result[0]){
         free(result);
